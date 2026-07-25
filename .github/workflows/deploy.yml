@@ -1,0 +1,49 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.164.0"
+          extended: true
+
+      - name: Build Hugo site
+        run: hugo --source site --quiet
+
+      - name: Deploy to server via SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          HOST: zbit.info
+          USER: ubuntu
+          PORT: 22
+          TARGET: /var/www/aiops-hot
+        run: |
+          # 写入私钥
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # 阻止首次连接询问 HostKey
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts 2>/dev/null
+
+          # 拉取最新代码并构建
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST -p $PORT << 'ENDSSH'
+            cd $TARGET
+            git fetch origin main
+            git reset --hard origin/main
+            hugo --source site --quiet
+            echo "BUILD_OK"
+          ENDSSH
+
+          echo "Deploy completed successfully"
