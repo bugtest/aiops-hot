@@ -39,11 +39,22 @@ aiops-hot/
 ## 数据来源
 
 ### 行业动态（RSS / 博客）
-- **InfoQ 中国** — 技术深度文章
-- **Red Hat Blog** — DevOps / AIOps 实践
-- **SRE Weekly** — 国际 SRE 资讯
-- **腾讯云开发者社区** — 大厂实践
-- **华为云 / 阿里云** — 智能运维案例
+- **一线工程团队博客**（技术深度最高）
+  - **Google Cloud SRE** — Google SRE 官方内容，Agentic AI 运维前沿
+  - **Netflix Tech Blog** — 混沌工程 & 大规模分布式系统实战
+  - **The New Stack** — 云原生/可观测性/AIOps 独立深度报道
+- **可观测性生态核心**
+  - **Honeycomb Blog** — 可观测性 2.0、高基数数据、eBPF
+  - **Grafana Labs Blog** — Prometheus/Loki/Tempo/Mimir 全栈实践
+  - **Elastic Observability** — AIOps 日志智能分析与 ML 异常检测
+- **事件管理 & AI SRE**
+  - **incident.io Blog** — AI SRE、告警治理、事件管理最佳实践
+  - **Datadog Engineering** — APM/分布式追踪/基础设施监控
+  - **PagerDuty Blog** — 事件响应与数字化运维案例
+- **中文 & 行业资讯**
+  - **InfoQ 中国** — 技术深度文章
+  - **腾讯云开发者社区** — 大厂实践
+  - **SRE Weekly** — 国际 SRE 周报
 
 ### 开源工具（GitHub API）
 按 AIOps/DevOps/SRE 关键词搜索 GitHub，按 Stars 排序收录

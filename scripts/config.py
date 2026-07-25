@@ -7,80 +7,122 @@ import hashlib, datetime
 
 # ========================
 # RSS 源配置（行业动态）
+# 精选全球技术含量最高的 AIOps / DevOps / SRE / 可观测性博客
 # ========================
 RSS_FEEDS = [
-    # 大厂实践 & 行业博客
+    # ── 中文优质源（保留） ──
     {
         "name": "InfoQ中国",
         "url": "https://news.cn.infoq.com/rss/",
         "category": "practice",
         "section": "articles",
-        "tags": ["实践", "架构"],
-        "weight": 10,
+        "tags": ["实践", "架构", "中国"],
+        "weight": 9,
     },
     {
         "name": "腾讯云+开发者",
         "url": "https://cloud.tencent.com/developer/rss/list/255",
         "category": "practice",
         "section": "articles",
-        "tags": ["腾讯云", "实践"],
-        "weight": 9,
-    },
-    {
-        "name": "华为云开发者社区",
-        "url": "https://developer.huaweicloud.com/rss",
-        "category": "practice",
-        "section": "articles",
-        "tags": ["华为云", "实践"],
+        "tags": ["腾讯云", "实践", "中国"],
         "weight": 8,
     },
-    {
-        "name": "阿里云开发者社区",
-        "url": "https://yq.aliyun.com/rss",
-        "category": "practice",
-        "section": "articles",
-        "tags": ["阿里云", "实践"],
-        "weight": 8,
-    },
-    {
-        "name": "36Kr AIOps",
-        "url": "https://36kr.cn/feed",
-        "category": "news",
-        "section": "articles",
-        "tags": ["科技", "新闻"],
-        "weight": 7,
-    },
-    {
-        "name": "Red Hat Blog",
-        "url": "https://www.redhat.com/en/rss/blog",
-        "category": "practice",
-        "section": "articles",
-        "tags": ["RedHat", "DevOps"],
-        "weight": 7,
-    },
-    {
-        "name": "Dynatrace Blog",
-        "url": "https://www.dynatrace.com/rss.xml",
-        "category": "practice",
-        "section": "articles",
-        "tags": ["APM", "AIOps"],
-        "weight": 6,
-    },
+
+    # ── SRE 行业资讯 ──
     {
         "name": "SRE Weekly",
         "url": "https://sreweekly.com/feed",
         "category": "practice",
         "section": "articles",
-        "tags": ["SRE", "运维"],
-        "weight": 8,
+        "tags": ["SRE", "运维", "国际"],
+        "weight": 7,
     },
+
+    # ── 一线工程团队博客（技术深度最高） ──
     {
-        "name": "DZone DevOps",
-        "url": "https://dzone.com/devops-tutorials-tools/java-spring-framework",
+        "name": "Google Cloud SRE",
+        "url": "https://cloud.google.com/blog/products/devops-sre/rss",
         "category": "practice",
         "section": "articles",
-        "tags": ["DevOps", "实践"],
-        "weight": 6,
+        "tags": ["Google", "SRE", "国际", "可观测性"],
+        "weight": 10,
+        "note": "Google SRE 团队官方博客，《SRE 白皮书》原班人马，Agentic AI 运维前沿",
+    },
+    {
+        "name": "Netflix Tech Blog",
+        "url": "https://netflixtechblog.com/feed",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["Netflix", "分布式系统", "国际", "SRE"],
+        "weight": 10,
+        "note": "混沌工程发源地，大规模分布式系统实战经验，每篇都是硬核技术文",
+    },
+    {
+        "name": "The New Stack",
+        "url": "https://thenewstack.io/feed/",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["云原生", "DevOps", "国际", "AI"],
+        "weight": 10,
+        "note": "独立科技媒体，云原生/可观测性/AIOps 全覆盖，技术深度行业领先",
+    },
+
+    # ── 可观测性生态核心博客 ──
+    {
+        "name": "Honeycomb Blog",
+        "url": "https://www.honeycomb.io/blog/feed.xml",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["Observability", "可观测性", "国际", "eBPF"],
+        "weight": 9,
+        "note": "可观测性 2.0 概念推动者，CTO Charity Majors 亲笔，高基数数据深度技术",
+    },
+    {
+        "name": "Grafana Labs Blog",
+        "url": "https://grafana.com/blog/index.xml",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["Grafana", "Prometheus", "可观测性", "国际"],
+        "weight": 9,
+        "note": "开源可观测性生态核心，Prometheus/Loki/Tempo/Mimir 全栈最佳实践",
+    },
+    {
+        "name": "Elastic Observability",
+        "url": "https://elastic-dev.co/observability-labs/feed/",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["Elastic", "AIOps", "日志", "国际"],
+        "weight": 8,
+        "note": "ELK 栈 AIOps 日志智能分析，ML 驱动异常检测实战文章",
+    },
+
+    # ── 事件管理 & AI SRE ──
+    {
+        "name": "incident.io Blog",
+        "url": "https://incident.io/blog/feed.xml",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["SRE", "事件管理", "AI", "国际"],
+        "weight": 8,
+        "note": "AI SRE 实践先驱，覆盖事件管理、告警治理、On-call 最佳实践",
+    },
+    {
+        "name": "Datadog Engineering",
+        "url": "https://www.datadoghq.com/blog/feed/",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["Datadog", "APM", "监控", "国际"],
+        "weight": 8,
+        "note": "全球最大 APM 平台工程博客，分布式追踪/基础设施监控深度技术",
+    },
+    {
+        "name": "PagerDuty Blog",
+        "url": "https://www.pagerduty.com/blog/feed/",
+        "category": "practice",
+        "section": "articles",
+        "tags": ["事件响应", "AIOps", "自动化", "国际"],
+        "weight": 7,
+        "note": "事件管理标杆企业，AIOps 实践与数字化运维案例",
     },
 ]
 
@@ -99,11 +141,11 @@ BLOG_SOURCES = [
         "type": "ajax_json",
     },
     {
-        "name": "阿里云智能运维",
-        "url": "https://yq.aliyun.com/rss",
+        "name": "AWS DevOps & SRE",
+        "url": "https://aws.amazon.com/blogs/devops/",
         "category": "case",
         "section": "articles",
-        "tags": ["阿里云", "智能运维"],
+        "tags": ["AWS", "DevOps", "案例"],
         "weight": 9,
         "type": "rss",
     },
@@ -120,6 +162,11 @@ GITHUB_KEYWORDS = [
     "cicd", "elasticsearch", "logstash", "kibana", "fluentd",
     "zabbix", "nagios", "datadog", "newrelic", "dynatrace",
     "keep", "opsgenie", "runbook", "incident", "oncall",
+    # 新增：AIOps / 可观测性前沿
+    "ebpf", "openobserve", "signoz", "pixie", "chaos-mesh",
+    "litmus", "crossplane", "kyverno", "kube-prometheus",
+    "opentelemetry-operator", "vector", "alloy",
+    "langchain", "llm-ops", "agentic-ops",
 ]
 
 # GitHub Trending API（无需 token）
