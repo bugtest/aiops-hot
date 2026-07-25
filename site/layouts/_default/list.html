@@ -1,0 +1,54 @@
+{{ define "title" }}{{ .Title }} · 智能运维前线{{ end }}
+
+{{ define "main" }}
+<section class="section">
+  <h1 class="page-title">{{ .Title }}</h1>
+
+  {{ if eq .Section "articles" }}
+  <div class="article-list">
+    {{ range .Pages }}
+    <div class="article-item">
+      <div class="article-meta">
+        <span class="tag tag-{{ .Params.category }}">{{ .Params.category }}</span>
+        <span class="source">{{ .Params.source }}</span>
+        <span class="date">{{ .Date.Format "2006-01-02" }}</span>
+      </div>
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p>{{ .Summary | truncate 120 }}</p>
+    </div>
+    {{ end }}
+  </div>
+
+  {{ else if eq .Section "tools" }}
+  <div class="tool-grid">
+    {{ range .Pages }}
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-lang">{{ .Params.language }}</span>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </div>
+      <p class="tool-desc">{{ .Summary | truncate 80 }}</p>
+      <div class="tool-stats">
+        <span>Stars: {{ .Params.stars }}</span>
+        <span>Forks: {{ .Params.forks }}</span>
+        <span>Issues: {{ .Params.issues }}</span>
+      </div>
+      <div class="tool-tags">
+        {{ range .Params.tags }}<span class="mini-tag">{{ . }}</span>{{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+
+  {{ else if eq .Section "daily" }}
+  <div class="daily-list">
+    {{ range .Pages }}
+    <div class="daily-item">
+      <span class="daily-date">{{ .Title }}</span>
+      <a href="{{ .RelPermalink }}" class="daily-link">查看日报</a>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+</section>
+{{ end }}

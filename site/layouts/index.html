@@ -1,0 +1,92 @@
+{{ define "title" }}精选 · 智能运维前线{{ end }}
+
+{{ define "main" }}
+<!-- Banner -->
+<section class="hero">
+  <h1>智能运维前线</h1>
+  <p class="hero-sub">AIOps · 智能运维 · 行业动态 · 开源工具</p>
+  <p class="hero-desc">聚合大厂实践、技术博客、开源工具，每日精选，与时俱进</p>
+</section>
+
+<!-- 今日热榜 -->
+<section class="section">
+  <h2 class="section-title">今日热榜</h2>
+  <div class="hot-list">
+    {{ range $i, $page := (where (where .Site.RegularPages "Section" "articles") "Kind" "page") }}
+    {{ if lt $i 10 }}
+    <div class="hot-item">
+      <span class="hot-rank">{{ add $i 1 }}</span>
+      <div class="hot-content">
+        <h3><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+        <div class="hot-meta">
+          <span class="tag tag-{{ $page.Params.category }}">{{ $page.Params.category }}</span>
+          <span class="source">{{ $page.Params.source }}</span>
+          <span class="date">{{ $page.Date.Format "01-02" }}</span>
+        </div>
+      </div>
+    </div>
+    {{ end }}
+    {{ end }}
+  </div>
+</section>
+
+<!-- 行业动态 -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">行业动态</h2>
+    <a href="/articles/" class="more-link">更多</a>
+  </div>
+  <div class="card-grid">
+    {{ range first 6 (where (where .Site.RegularPages "Section" "articles") "Kind" "page") }}
+    <div class="card">
+      <span class="tag tag-{{ .Params.category }}">{{ .Params.category }}</span>
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="card-excerpt">{{ .Summary | truncate 80 }}</p>
+      <div class="card-meta">
+        <span>{{ .Params.source }}</span>
+        <span>{{ .Date.Format "2006-01-02" }}</span>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<!-- 工具库 -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">工具/开源</h2>
+    <a href="/tools/" class="more-link">更多</a>
+  </div>
+  <div class="tool-grid">
+    {{ range first 6 (where (where .Site.RegularPages "Section" "tools") "Kind" "page") }}
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-lang">{{ .Params.language }}</span>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </div>
+      <p class="tool-desc">{{ .Summary | truncate 60 }}</p>
+      <div class="tool-stats">
+        <span>Stars: {{ .Params.stars }}</span>
+        <span>Forks: {{ .Params.forks }}</span>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<!-- 最新日报 -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">每日日报</h2>
+    <a href="/daily/" class="more-link">历史日报</a>
+  </div>
+  <div class="daily-list">
+    {{ range first 5 (where (where .Site.RegularPages "Section" "daily") "Kind" "page") }}
+    <div class="daily-item">
+      <span class="daily-date">{{ .Title }}</span>
+      <a href="{{ .RelPermalink }}" class="daily-link">查看日报</a>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

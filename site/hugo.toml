@@ -1,0 +1,20 @@
+baseURL = "https://aiops-hot.example.com/"
+languageCode = "zh-cn"
+title = "智能运维前线 — AIOps 每日精选"
+theme = []
+
+[params]
+  description = "智能运维（AIOps）行业动态聚合平台，每日精选行业动态、开源工具、技术实践"
+  author = "AIOps Hot"
+  keywords = "AIOps, 智能运维, DevOps, SRE, 运维自动化"
+
+[outputs]
+  home = ["HTML"]
+  page = ["HTML"]
+
+[taxonomies]
+  tag = "tags"
+
+[markup]
+  [markup.highlight]
+    codeFences = true

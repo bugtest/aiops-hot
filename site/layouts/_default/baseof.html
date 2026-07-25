@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ block "title" . }}{{ .Title }} | 智能运维前线{{ end }}</title>
+  <meta name="description" content="{{ .Site.Params.description }}">
+  <meta name="keywords" content="{{ .Site.Params.keywords }}">
+  <link rel="stylesheet" href="/css/style.css">
+  {{ block "head" . }}{{ end }}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <a href="/">⚡ 智能运维前线</a>
+      </div>
+      <nav class="nav">
+        <a href="/" class="{{ if eq .RelPermalink "/" }}active{{ end }}">精选</a>
+        <a href="/articles/" class="{{ if eq .RelPermalink "/articles/" }}active{{ end }}">行业动态</a>
+        <a href="/tools/" class="{{ if eq .RelPermalink "/tools/" }}active{{ end }}">工具库</a>
+        <a href="/daily/" class="{{ if eq .RelPermalink "/daily/" }}active{{ end }}">每日日报</a>
+      </nav>
+      <div class="header-right">
+        <span class="update-time" id="updateTime">📅 {{ now | dateFormat "2006-01-02 15:04" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© {{ now | dateFormat "2006" }} 智能运维前线 · AIOps Hot · 内容来自互联网，版权归原作者所有</p>
+      <p>数据每日早 8:00 自动更新 · <a href="/about/">关于</a></p>
+    </div>
+  </footer>
+</body>
+</html>

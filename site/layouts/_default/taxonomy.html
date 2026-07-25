@@ -1,0 +1,20 @@
+{{ define "title" }}{{ .Title }} · 智能运维前线{{ end }}
+
+{{ define "main" }}
+<section class="section">
+  <h1 class="page-title">{{ .Title }}</h1>
+  <div class="article-list">
+    {{ range .Pages }}
+    <div class="article-item">
+      <div class="article-meta">
+        <span class="tag tag-{{ .Params.category }}">{{ .Params.category }}</span>
+        <span class="source">{{ .Params.source }}</span>
+        <span class="date">{{ .Date.Format "2006-01-02" }}</span>
+      </div>
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p>{{ .Summary | truncate 120 }}</p>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
