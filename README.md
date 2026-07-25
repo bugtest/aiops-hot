@@ -2,17 +2,25 @@
 
 > 聚合 AIOps / DevOps / SRE 行业动态、开源工具、技术实践，每日早 8:00 自动更新
 
+**访问地址：** http://zbit.info:8888
+
 ---
 
 ## 项目结构
 
 ```
 aiops-hot/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml     # GitHub Actions 自动部署工作流
 ├── scripts/
 │   ├── config.py          # 数据源配置（RSS源、关键词、工具库）
-│   ├── fetch.py           # 核心抓取脚本（RSS + GitHub + 博客）
+│   ├── fetch.py           # 核心抓取脚本（RSS + GitHub Trending）
+│   ├── fetch_feeds.py     # RSS 订阅源抓取
+│   ├── fetch_github.py    # GitHub Trending 抓取
 │   ├── run_daily.bat      # Windows 定时任务入口脚本
-│   └── setup_scheduler.py # 计划任务安装脚本
+│   ├── setup_scheduler.ps1 # 计划任务 PowerShell 安装脚本
+│   └── nginx-aiops-hot.conf # 服务器 nginx 站点配置
 ├── site/                   # Hugo 静态站点
 │   ├── hugo.toml           # Hugo 配置
 │   ├── layouts/            # 模板（首页/列表/详情）
@@ -45,35 +53,67 @@ aiops-hot/
 
 ---
 
-## 手动运行
+## 手动运行（抓取数据）
 
 ```bash
-# 1. 进入目录
+# 进入目录
 cd C:\Users\wangc\.qclaw\workspace\aiops-hot
 
-# 2. 抓取数据 + 构建站点（一条命令）
-.\scripts\run_daily.bat
+# 抓取数据（RSS + GitHub Trending）
+python scripts/fetch.py
 
-# 或者分开执行：
-python scripts/fetch.py          # 抓取数据
-hugo -p site                     # 构建站点（site 目录下执行）
-```
-
----
-
-## 本地预览
-
-```bash
-cd aiops-hot/site
+# 本地预览
+cd site
 hugo server --port 1313
 # 访问 http://localhost:1313
 ```
 
 ---
 
-## 自动更新（每天早 8:00）
+## 自动部署（GitHub Actions）
 
-计划任务 `AIOpsHot_DailyUpdate` 已创建，开机登录后自动触发。
+每次推送到 `main` 分支，GitHub Actions 自动完成：SSH 登录服务器 → 拉取最新代码 → Hugo 重新构建 → 站点上线。整个过程约 **17 秒**。
+
+**部署流程：**
+```
+git push origin main
+    ↓
+GitHub Actions (Ubuntu  runner)
+    ↓
+  1. Checkout 代码
+  2. Hugo Extended 0.164.0 构建
+  3. SSH 登录 zbit.info
+  4. git pull + hugo rebuild
+    ↓
+站点自动更新 → http://zbit.info:8888
+```
+
+**部署密钥：**
+- `DEPLOY_KEY` Secret 已配置（服务器 SSH ED25519 私钥）
+- 仅允许 git fetch 操作，不支持交互登录
+- 部署用户 `ubuntu`，站点目录 `/var/www/aiops-hot`
+
+**查看部署状态：**
+```bash
+# 最近运行
+gh run list --repo bugtest/aiops-hot
+
+# 详细日志
+gh run view <run-id> --log --repo bugtest/aiops-hot
+```
+
+**触发部署：**
+```bash
+git add -A
+git commit -m "update"
+git push origin main
+```
+
+---
+
+## 本地定时更新（每天早 8:00）
+
+计划任务 `AIOpsHot_DailyUpdate` 在本地 Windows 运行，抓取数据后自动推送 GitHub 触发 CI/CD。
 
 **验证计划任务：**
 ```powershell
@@ -115,15 +155,17 @@ SchTasks /Delete /TN "AIOpsHot_DailyUpdate" /F
 
 ---
 
-## 部署（可选）
+## 服务器信息
 
-### Vercel（推荐）
-1. 将 `site/public` 目录推送到 GitHub
-2. 在 Vercel 导入项目，Build Command 填 `hugo`
-3. 域名绑定后自动 HTTPS
-
-### 替换数据源
-当前脚本使用免费 GitHub API（60次/小时），如需更稳定可申请 Personal Access Token。
+| 项目 | 值 |
+|------|-----|
+| 访问地址 | http://zbit.info:8888 |
+| 服务器 | zbit.info |
+| SSH 用户 | ubuntu |
+| 站点目录 | `/var/www/aiops-hot` |
+| nginx 配置 | `/etc/nginx/sites-available/aiops-hot.conf` |
+| 构建工具 | Hugo Extended v0.164.0 |
+| **注意** | 端口 80 被 Shadowsocks 占用，nginx 使用 8888 端口 |
 
 ---
 
